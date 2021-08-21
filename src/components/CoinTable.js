@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from "react-redux"
 import { CONNECTION_REQUEST } from '../redux/types'
-
+import { Table } from 'reactstrap';
 import connectWebSocket from '../api/connectSocket'
+
+import CoinGrid from './CoinGrid';
 
 const CoinTable = () => {  
     const [price, setPrice] = useState(0);
+    const [Field, setField] = useState();
     const dispatch = useDispatch()
     useEffect(() => {
 
@@ -21,14 +24,17 @@ const CoinTable = () => {
                 let reader = new FileReader();
                 reader.onload = () => {
                   let result = JSON.parse(reader.result);
+                  console.log(result, 'data in')
                   console.log(result.trade_price, 'data in')
+                  if (result.code == "KRW-BTC")
                   setPrice(result.trade_price)
+                  setField(result)
                 };
                 reader.readAsText(data);
               }
     
           };
-        connect.conn.send('[{"ticket":"test"},{"type":"ticker","codes":["KRW-BTC"]}]')
+        connect.conn.send('[{"ticket":"test"},{"type":"ticker","codes":["KRW-BTC","KRW-ETH"]}]')
     }
     
     const connectBithumb = async () => {
@@ -56,8 +62,12 @@ const CoinTable = () => {
     }
     
     return (
-        
+        <>
         <div>비트코인 가격 : {price} </div>
+        { Field &&
+          <CoinGrid props={Field} />
+        }
+        </>
     )
 }
 
