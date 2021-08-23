@@ -17,7 +17,7 @@ const CoinTable = () => {
     }, [])
     const connect = useSelector((state) => state.connect)
 
-    console.log(connect, 'temp임', connect.connectionFlag)
+    //sconsole.log(connect, 'temp임', connect.connectionFlag)
     if (connect.connectionFlag) {
         connect.conn.onmessage = ({ data }) => {
             if (data instanceof Blob) {
