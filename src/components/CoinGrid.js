@@ -2,22 +2,14 @@ import React, { useState, useRef } from 'react';
 import {Table} from 'reactstrap'
 
 const CoinGrid = (props) => {
-
-    const data = props.props
-    const hashmap = useRef(new Map())
-    const code = data.code
-    const price = data.trade_price
-    const logo = "smile"
-    hashmap.current.set(code, {price, logo})
-    const temp = hashmap.current
-    console.log(temp, '오브젝인가')
-    //temp.entries(temp).forEach(([key, value]) => console.log(`${key}: ${value} wwwww`));
-    console.log(temp.entries(), 'entry')
-    hashmap.current.forEach((value,key) => {console.log(key,value.price,value.logo, 'objobj')})
+    console.log(props, 'propsporposrpsp')
+    
+    
     return (
         <>
           <div>hello</div>
           <div>{props.props.code}</div>
+          
           <Table hover>
               <thead>
                   <th>Simbol</th>
@@ -33,17 +25,8 @@ const CoinGrid = (props) => {
                     <th>{props.props.trade_price}</th>
                 </tr>
 
-
-                { hashmap.current.forEach((value, key, index) => {
-                    console.log(value, key, '드러오냐고')
-                    return (
-                        <tr key={index}>
-                          <td>{key}</td>
-                          <td>{key}</td>
-                          <td>{key}</td>
-                        </tr>
-                    )
-                })}
+                
+                
               </tbody>
           </Table>
           

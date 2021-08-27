@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from "react-redux"
-import { CONNECTION_REQUEST } from '../redux/types'
+import { COIN_DATA, CONNECTION_REQUEST } from '../redux/types'
 import { Table } from 'reactstrap';
 import connectWebSocket from '../api/connectSocket'
 
@@ -9,13 +9,18 @@ import CoinGrid from './CoinGrid';
 const CoinTable = () => {  
     const [price, setPrice] = useState(0);
     const [Field, setField] = useState();
+    const [data, setData] = useState()
+
     const dispatch = useDispatch()
+
     useEffect(() => {
-
         connectBithumb()
-
     }, [])
     const connect = useSelector((state) => state.connect)
+    const temp = useSelector((state) => state.coin)
+    console.log(temp, '결과값')
+
+    let coinDataList = {}
 
     //sconsole.log(connect, 'temp임', connect.connectionFlag)
     if (connect.connectionFlag) {
@@ -25,10 +30,14 @@ const CoinTable = () => {
                 reader.onload = () => {
                   let result = JSON.parse(reader.result);
                   console.log(result, 'data in')
-                  console.log(result.trade_price, 'data in')
-                  if (result.code == "KRW-BTC")
-                  setPrice(result.trade_price)
-                  setField(result)
+                  coinDataList[result.code] = result
+
+                  // Coin 데이타 송신
+                  dispatch({
+                    type: COIN_DATA,
+                    payload: coinDataList,
+                  })
+            
                 };
                 reader.readAsText(data);
               }
@@ -43,29 +52,13 @@ const CoinTable = () => {
             type:CONNECTION_REQUEST,
             conn: conn,
         })
-
-        // conn.onmessage = ({ data }) => {
-        //     let tmp = JSON.parse(data)
-        //     console.log(tmp, '123123213')
-        //     if (data instanceof Blob) {
-        //       console.log('blob 들어옴 ?')
-        //       let reader = new FileReader();
-        //       reader.onload = () => {
-        //         let result = JSON.parse(reader.result);
-        //         console.log(result, 'result')
-        //       };
-        //       reader.readAsText(data);
-        //     }
-        //   };
-        // conn.send('{"type":"ticker", "symbols": ["BTC_KRW", "ETH_KRW"], "tickTypes": ["30M", "1H", "12H", "24H", "MID" ]}')
-        // console.log(conn, 'ttt')
     }
     
     return (
         <>
         <div>비트코인 가격 : {price} </div>
-        { Field &&
-          <CoinGrid props={Field} />
+        { data &&
+          <CoinGrid props={data} />
         }
         </>
     )
