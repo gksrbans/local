@@ -2,8 +2,12 @@ import React, { useState, useRef } from 'react';
 import {Table} from 'reactstrap'
 
 const CoinGrid = (props) => {
-    console.log(props, 'propsporposrpsp')
+    const data = props.props.payload
+    const bitcoin = useRef(0);
+    console.log(data, '데이타임')
     
+
+    console.log(bitcoin, '빗코 데이타임')
     
     return (
         <>
@@ -21,17 +25,22 @@ const CoinGrid = (props) => {
                 
                 <tr>
                     <th scope="row">😊</th>
-                    <th>{props.props.code}</th>
-                    <th>{props.props.trade_price}</th>
+                    <th>test</th>
+                    <th>test2</th>
                 </tr>
 
-                
+                <tr>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>3</td>
+                </tr>
                 
               </tbody>
           </Table>
           
         </>
     )
+    
 }
 
 export default CoinGrid

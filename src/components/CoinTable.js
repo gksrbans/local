@@ -57,8 +57,8 @@ const CoinTable = () => {
     return (
         <>
         <div>비트코인 가격 : {price} </div>
-        { data &&
-          <CoinGrid props={data} />
+        { Object.keys(temp).length !== 0 &&
+          <CoinGrid props={temp} />
         }
         </>
     )
